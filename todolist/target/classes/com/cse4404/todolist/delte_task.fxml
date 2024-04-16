@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane style="-fx-background-color: #9CE748;" prefHeight="351.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController_delete_task">
+   <children>
+      <Button layoutX="14.0" layoutY="283.0" mnemonicParsing="false" onAction="#onbackclick" prefHeight="50.0" prefWidth="274.0" text="Back">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="300.0" layoutY="283.0" mnemonicParsing="false" onAction="#ondeleteclick" prefHeight="50.0" prefWidth="274.0" text="Delete">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <TextField fx:id="title" layoutX="168.0" layoutY="104.0" prefHeight="51.0" prefWidth="241.0" promptText="Enter the Title of Task" />
+      <DatePicker fx:id="date" layoutX="200.0" layoutY="39.0" prefHeight="51.0" prefWidth="200.0" promptText="Enter Date of task" />
+      <TextField fx:id="details" layoutX="112.0" layoutY="168.0" prefHeight="51.0" prefWidth="339.0" promptText="Enter the Details of Task" />
+      <Label fx:id="alter" alignment="CENTER" layoutX="92.0" layoutY="234.0" prefHeight="35.0" prefWidth="380.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
