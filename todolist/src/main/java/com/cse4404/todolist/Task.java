@@ -1,107 +1,280 @@
 package com.cse4404.todolist;
 
-import javafx.fxml.FXML;
+
+
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
+
+
 public class Task {
+    private String comp ;
     private String Task_title;
     private String Task_Details;
     private LocalDate  Date;
+    private int  id;
+    static String PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
+    String _PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/task_db";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "Ahmed@2026";
 
-    Task(LocalDate Date_,String Task_title_,String Task_Details_){
+
+    private void load_data_db() throws IOException, SQLException {
+        try (Connection connection = DriverManager.getConnection(DB_URL)) {
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS task_db.tasks_back_up ("
+                    + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                    + "msg VARCHAR(255) NOT NULL);";
+
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate(createTableSQL);
+            }
+
+            String selectLastMsgSQL = "SELECT id, msg FROM task_db.tasks_back_up ORDER BY id DESC LIMIT 1;";
+            try (PreparedStatement statement = connection.prepareStatement(selectLastMsgSQL)) {
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    String lastMessage = resultSet.getString("msg");
+                    Path filePath = Paths.get("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt");
+                    Files.write(filePath, lastMessage.getBytes());
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void save_data(String data) {
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String sql = "CREATE TABLE IF NOT EXISTS  task_db.tasks_back_up ("
+                    +"id INT AUTO_INCREMENT PRIMARY KEY,"+"msg VARCHAR(255) NOT NULL" + ");";
+
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate(sql);
+            }
+            String sql_ = "INSERT INTO tasks_back_up(msg) VALUES (?);";
+            PreparedStatement statement = connection.prepareStatement(sql_);
+            statement.setString(1, data);
+            statement.executeUpdate();
+            statement.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    Task(LocalDate Date_,String id,String Task_title_,String Task_Details_) throws IOException {
     this.Date = Date_;
     this.Task_Details = Task_Details_;
     this.Task_title = Task_title_;
+    this.comp = "false";
+    if(!(isIdAvailable(Integer.parseInt(id)))){
+        this.id = Integer.parseInt(id);
+    }else{
+        System.exit(1);
     }
-    public void sort_tasks() throws IOException{
-        String filePath = "C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
+    }
+
+
+
+
+
+
+    Task(){}
+
+
+
+
+
+
+
+    public String extract_text() {
+        String fileContents = null;
+        try {
+        load_data_db();
+        FileReader fileReader = new FileReader(PATH);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append("\n");
+        }
+        bufferedReader.close();
+         fileContents = stringBuilder.toString();
+        }
+        catch (IOException | SQLException e) {
+        e.printStackTrace();
+    }
+        return fileContents;
+    }
+
+
+
+
+    public void sort_tasks() throws IOException {
+       Path sourcePath = Paths.get("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt");
+        if(sourcePath.toFile().exists()){
+       Path destinationPath = Paths.get("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt");
+        try (InputStream inputStream = Files.newInputStream(sourcePath);
+             OutputStream outputStream = Files.newOutputStream(destinationPath)) {
+
+            int byteRead;
+            while ((byteRead = inputStream.read()) != -1) {
+                outputStream.write(byteRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         ArrayList<String> lines = new ArrayList<>();
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = new Scanner(new File(PATH));
         while (scanner.hasNextLine()) {
                     lines.add(scanner.nextLine());
         }
                 scanner.close();
                 Collections.sort(lines);
-                FileWriter writer = new FileWriter(filePath);
+                FileWriter writer = new FileWriter(PATH);
                 for (String line : lines) {
                     writer.write(line + "\n");
                 }
                 writer.close();
-
+                save_data(extract_text());}
         }
 
+public void sort_add() throws IOException {
+    ArrayList<String> lines = new ArrayList<>();
+    Scanner scanner = new Scanner(new File(PATH));
+    while (scanner.hasNextLine()) {
+        lines.add(scanner.nextLine());
+    }
+    scanner.close();
+    Collections.sort(lines);
+    FileWriter writer = new FileWriter(PATH);
+    for (String line : lines) {
+        writer.write(line + "\n");
+    }
+    writer.close();
+    save_data(extract_text());}
 
     public boolean AppendToFileFiles() throws IOException {
-        String filePath = "C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
-        String textToAppend = Date.toString() + " " + Task_title + " " + Task_Details + "\n";
-        Files.write(Paths.get(filePath), textToAppend.getBytes(), StandardOpenOption.APPEND);
+        String textToAppend = Date.toString() + " " + String.valueOf(id) + " " + String.valueOf(false) + " " + Task_title + " " + Task_Details + "\n";
+        Files.write(Paths.get(PATH), textToAppend.getBytes(), StandardOpenOption.APPEND);
+        sort_add();
+        return true;
+    }
+
+    public boolean isIdAvailable(int id) throws IOException {
+        File filePath = new File(PATH);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            String[] parts = currentLine.split(" ");
+            if (parts.length >= 2 && parts[1].equals(String.valueOf(id))) {
+                reader.close();
+                return true;
+            }
+        }
+        reader.close();
+        return false;
+    }
+
+    public String searchInfo(String id) {
+        String info = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+                String taskId = parts[1];
+                if (taskId.equals(id)) {
+                    info = line;
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+
+
+    public boolean markComplete(String taskId) throws IOException {
+        boolean taskFound = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(_PATH))) {
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
+                String[] parts = currentLine.split(" ");
+                if (parts.length >= 4 && parts[1].equals(taskId) && parts[2].equals("false")) {
+                    parts[2] = "true";
+                    currentLine = String.join(" ", parts);
+                    taskFound = true;
+                }
+                writer.write(currentLine + "\n");
+            }
+        }
+        if (!taskFound) {
+            return false;
+        }
         sort_tasks();
         return true;
     }
-    public boolean deleteTaskToFile() throws IOException {
-        boolean x =false;
-        File filePath = new File("C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt");
-        if (!filePath.exists()){filePath.createNewFile();}
-        File tempFile = new File("C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt");
-        String lineToDelete = Date.toString() + " " + Task_title + " " + Task_Details ;
+
+
+
+    public boolean deleteTaskToFile(String taskInfo) throws IOException {
+        boolean deleted = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(_PATH))) {
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
+                if (!currentLine.equals(taskInfo)) {
+                    writer.write(currentLine + "\n");
+                } else {
+                    deleted = true;
+                }
+            }
+        }
+        if (deleted) {
+            sort_tasks();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    public boolean editTask(String lineToDelete,String str_new) throws IOException {
+        boolean x = false;
+        File filePath = new File(PATH);
+        File tempFile = new File(_PATH);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
         String currentLine;
         while ((currentLine = reader.readLine()) != null) {
             if (!currentLine.equals(lineToDelete)) {
-                writer.write(currentLine+ System.getProperty("line.separator"));
-            }
-            if (currentLine.equals(lineToDelete)) {
-                x=true;
-            }
-        }
-        reader.close();
-        writer.close();
-        if(!x){
-            return false;
-        }
-        if (filePath.delete()) {
-            tempFile.renameTo(filePath);
-        }
-        sort_tasks();
-        return true;
-    }
-    public boolean editTask(String _Date,String _Task_title,String _Task_Details) throws IOException,FileNotFoundException {
-        boolean x =false;
-        File filePath = new File("C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt");
-        if (!filePath.exists()){filePath.createNewFile();}
-        File tempFile = new File("C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt");
-        String lineToDelete = Date.toString() + " " + Task_title + " " + Task_Details ;
-        String _lineToDelete = _Date + " " + _Task_title + " " + _Task_Details ;
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-        String currentLine;
-        while ((currentLine = reader.readLine()) != null) {
-            if (!currentLine.equals(lineToDelete)) {
-                writer.write(currentLine+ System.getProperty("line.separator"));
-            }
-            if (currentLine.equals(lineToDelete)) {
-                x= true;
-                writer.write(_lineToDelete+ System.getProperty("line.separator"));
+                writer.write(currentLine + "\n");
+            } else {
+                x = true;
+                writer.write(str_new + "\n");
             }
         }
         reader.close();
         writer.close();
-        if(!x){
+        if (!x) {
             return false;
         }
-        if(filePath.delete()){
-        tempFile.renameTo(filePath);}
         sort_tasks();
         return true;
     }

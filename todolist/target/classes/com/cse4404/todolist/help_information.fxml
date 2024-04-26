@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="188.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController_help_inforation">
+<AnchorPane styleClass="page-color" stylesheets="@styles.css" prefHeight="188.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController_help_inforation">
    <children>
-      <Pane style="-fx-background-color: #9CE748;" layoutX="-1.0" layoutY="-4.0" prefHeight="194.0" prefWidth="600.0">
+      <Pane  layoutX="-1.0" layoutY="-4.0" prefHeight="194.0" prefWidth="600.0" stylesheets="@styles.css">
          <children>
-            <Button layoutX="334.0" layoutY="144.0" mnemonicParsing="false" onAction="#onbackclick" prefHeight="27.0" prefWidth="85.0" text="Back" />
-            <Button layoutX="176.0" layoutY="144.0" mnemonicParsing="false" onAction="#onsubmitclick" prefHeight="27.0" prefWidth="85.0" text="Submit" />
+            <Button layoutX="334.0" layoutY="144.0" mnemonicParsing="false" styleClass="light-button" onAction="#onbackclick" prefHeight="27.0" prefWidth="85.0" text="Back" />
+            <Button layoutX="176.0" layoutY="144.0" mnemonicParsing="false"  styleClass="light-button" onAction="#onsubmitclick" prefHeight="27.0" prefWidth="85.0" text="Submit" />
             <TextArea fx:id="msg_" layoutX="44.0" layoutY="73.0" prefHeight="61.0" prefWidth="513.0" promptText="Your massage " />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="15.0" prefHeight="47.0" prefWidth="579.0" text="You Can Contact with us by giving the suggestion or the issues ny entering your email or you can keept it hidden user ">
+            <Label style="    -fx-font-family: 'Segoe UI Semibold';" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="15.0" prefHeight="47.0" prefWidth="579.0" text="You Can Contact with us by giving the suggestion or the issues ny entering your email or you can keept it hidden user ">
                <font>
                   <Font name="Yu Gothic UI Light" size="11.0" />
                </font>

@@ -1,0 +1,73 @@
+
+.light-button {
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #003366;
+}
+
+.light-button.radio-button {
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #ffffff;
+}
+
+.light-button_pomodo {
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #64b5f6;
+}
+
+.light-button:hover {
+
+    -fx-background-color: #64b5f6;
+}
+
+.light-button_pomodo:hover {
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #000000;
+    -fx-background-color: #003366;
+}
+
+.page-color{
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-background-color: #e6f7ff;
+}
+.font-inin-main-page{
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #000000;
+}
+.font-inin-main-page:hover
+{
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: white;
+}
+
+.light-list-view .list-cell {
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+    -fx-border-style: solid;
+    -fx-border-color:  #e6f7ff;
+    -fx-border-radius : 2%;
+}
+
+.light-list-view .list-cell:hover {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #003366;
+}
+
+.text-filed{
+    -fx-text-fill: white;
+    -fx-background-color: #003366;
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-border-style: solid;
+    -fx-border-color:  #e6f7ff;
+    -fx-border-radius : 7%;
+}
+
+.text-filed:hover{
+    -fx-text-fill: #000000;
+    -fx-background-color: #64b5f6;
+    -fx-font-family: 'Segoe UI Semibold';
+    -fx-border-color:  #e6f7ff;
+    -fx-border-radius : 0%;
+}

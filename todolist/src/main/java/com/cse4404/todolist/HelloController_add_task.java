@@ -8,8 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 
 public class HelloController_add_task {
@@ -20,6 +21,8 @@ public class HelloController_add_task {
 
     @FXML
     private TextField title;
+    @FXML
+    private TextField TASKID;
 
     @FXML
 
@@ -33,7 +36,7 @@ public class HelloController_add_task {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -43,14 +46,14 @@ public class HelloController_add_task {
 
     @FXML
     public void on_create_click(ActionEvent event) throws IOException {
-        String taskTitle = title.getText();
-        String taskDetails = details.getText();
+        String taskTitle = title.getText().trim();
+        String taskDetails = details.getText().trim();
         LocalDate taskDate = date.getValue();
+        String taskid = TASKID.getText().trim();
         LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         if (!taskTitle.isEmpty() && !taskDetails.isEmpty() && taskDate != null && ((taskDate.isAfter(today)) || (taskDate.isEqual(today)))) {
-            Task task = new Task(taskDate,taskTitle, taskDetails);
+            Task task = new Task(taskDate,taskid,taskTitle, taskDetails);
             if(task.AppendToFileFiles()){on_back_click(event);}else{alert.setText("Check the I/O files !!");}
         } else {
             alert.setText("Check the nullity and realability content enteries !!");

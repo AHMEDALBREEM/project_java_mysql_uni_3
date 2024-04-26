@@ -8,20 +8,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Font;
-
 import java.io.IOException;
+import java.util.Objects;
 
 public class HelloController_pomodo {
     @FXML
     private Label timerLabel;
     @FXML
     private Label instructionlabel;
+
     @FXML
-    private VBox main_vbox;
+    private Label information;
     @FXML
     private Button startButton;
     @FXML
@@ -47,7 +48,6 @@ public class HelloController_pomodo {
         longBreakButton.setFont(customFont);
         continueButton.setFont(customFont);
         instructionlabel.setFont(customFont);
-
         instructionlabel.setOpacity(0);
     }
 
@@ -56,11 +56,39 @@ public class HelloController_pomodo {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+     @FXML
+    private TextField as;
+
+@FXML
+public void onchange(){
+    if(as.getText() != null && !as.getText().isEmpty()) {
+    Task t1 = new Task();
+    information.setText(t1.searchInfo(as.getText().trim()));}
+}
+
+
+    @FXML
+    public void oncomplete(ActionEvent event) throws IOException {
+        if(as.getText() != null && !as.getText().isEmpty()) {
+            Task t1 = new Task();
+            information.setText(t1.searchInfo(as.getText().trim()));
+            if (t1.markComplete(as.getText().trim())) {
+                onbackclick(event);
+            }else{
+                instructionlabel.setText("Check the ID !!");
+
+            }
+        }else{
+            instructionlabel.setText("Check the ID !!");
+        }
+    }
+
     @FXML
     private void handleStartButton(ActionEvent event) {
 
@@ -88,7 +116,7 @@ public class HelloController_pomodo {
                     longBreakButton.setDisable(false);
                     stopButton.setDisable(true);
 
-                    instructionlabel.setOpacity(0);
+                    instructionlabel.setOpacity(1);
 
                 }
             }));
@@ -100,7 +128,7 @@ public class HelloController_pomodo {
     @FXML
     private void handleShortBreakButton(ActionEvent event) {
         minutes = 5;
-        seconds = 00;
+        seconds = 0;
         timerLabel.setText("05:00");
         shortBreakButton.setDisable(true);
         longBreakButton.setDisable(true);
@@ -113,7 +141,7 @@ public class HelloController_pomodo {
     @FXML
     private void handleLongBreakButton(ActionEvent event) {
         minutes = 15;
-        seconds = 00;
+        seconds = 0;
         timerLabel.setText("15:00");
         shortBreakButton.setDisable(true);
         longBreakButton.setDisable(true);

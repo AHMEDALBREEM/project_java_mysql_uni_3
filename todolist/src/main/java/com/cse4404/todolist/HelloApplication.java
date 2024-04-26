@@ -7,19 +7,19 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage primiry) throws IOException {
-
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primiry.setTitle("Todo list");
-        Image to_do_icon = new Image(getClass().getResourceAsStream("/a.png"));
-        primiry.getIcons().add(to_do_icon);
-        primiry.setScene(scene);
-        primiry.setResizable(false);
-        primiry.show();
+        primaryStage.setTitle("Todo list");
+        Image toDoIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/a.png")));
+        primaryStage.getIcons().add(toDoIcon);
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

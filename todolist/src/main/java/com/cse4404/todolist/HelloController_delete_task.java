@@ -9,18 +9,15 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.Objects;
+
 
 public class HelloController_delete_task {
 
     @FXML
-    private TextField details;
+    private TextField task_id;
 
-    @FXML
-    private TextField title;
 
-    @FXML
-    private DatePicker date;
     @FXML
     private Label alter;
 
@@ -31,22 +28,21 @@ public class HelloController_delete_task {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
     @FXML
-    public void ondeleteclick(ActionEvent event)throws IOException {
-        String taskTitle = title.getText();
-        String taskDetails = details.getText();
-        LocalDate taskDate = date.getValue();
-
-        if (!taskTitle.isEmpty() && !taskDetails.isEmpty() && taskDate != null) {
-            Task task = new Task(taskDate,taskTitle, taskDetails);
-            if(task.deleteTaskToFile()){onbackclick(event);}else{alter.setText("Check the correctness content !!");}
+    public void ondeleteclick(ActionEvent event) throws IOException {
+        String  TASKID = task_id.getText().trim();
+        String str;
+        if (!(TASKID.isEmpty())) {
+            Task task = new Task();
+            str = task.searchInfo(TASKID);
+            if(task.deleteTaskToFile(str)){onbackclick(event);}else{alter.setText("Check the correctness Id !!");}
         } else {
-            alter.setText("Check the nullity of content !!");
+            alter.setText("Check the nullity of Id !!");
         }
     }
 }

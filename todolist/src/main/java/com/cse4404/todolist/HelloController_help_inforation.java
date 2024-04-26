@@ -13,6 +13,7 @@ import java.io.IOException;
 
 
 import java.sql.*;
+import java.util.Objects;
 
 public class HelloController_help_inforation {
 
@@ -28,25 +29,24 @@ public class HelloController_help_inforation {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
     @FXML
-    public void onsubmitclick(ActionEvent event) throws IOException,SQLException {
-        if (msg_.getText() != "") {
+    public void onsubmitclick(ActionEvent event) throws IOException {
+        if (!Objects.equals(msg_.getText(), "")) {
             try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-                String sql = "CREATE TABLE IF NOT EXISTS msgs_from_users ("
+                String sql = "CREATE TABLE IF NOT EXISTS  test_msgs.msgs_from_users ("
                         + "msg VARCHAR(255) NOT NULL" + ");";
                 try (Statement stmt = connection.createStatement()) {
                     stmt.executeUpdate(sql);
-                    stmt.close();
                 }
                 String sql_ = "INSERT INTO msgs_from_users (msg) VALUES (?);";
                 PreparedStatement statement = connection.prepareStatement(sql_);
-                statement.setString(1, msg_.getText());
+                statement.setString(1, msg_.getText().trim());
                 statement.executeUpdate();
                 statement.close();
                 connection.close();

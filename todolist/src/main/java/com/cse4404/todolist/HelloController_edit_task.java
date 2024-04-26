@@ -7,24 +7,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.SQLException;
+import java.util.Objects;
+
 
 public class HelloController_edit_task {
 
     @FXML
-    private TextField details;
-
-    @FXML
-    private TextField title;
+    private TextField task_id;
 
     @FXML
     private TextField new_data;
 
-    @FXML
-    private DatePicker date;
     @FXML
     private Label alter;
     @FXML
@@ -37,21 +32,21 @@ public class HelloController_edit_task {
     private RadioButton details_radio;
 
     @FXML
-    public void ondate_radio_clicked() throws IOException {
+    public void ondate_radio_clicked()  {
         date_radio.setSelected(true);
         title_radio.setSelected(false);
         details_radio.setSelected(false);
     }
 
     @FXML
-    public void on_TITLE_radio_clicked() throws IOException {
+    public void on_TITLE_radio_clicked()  {
         date_radio.setSelected(false);
         title_radio.setSelected(true);
         details_radio.setSelected(false);
     }
 
     @FXML
-    public void on_details_radio_clicked() throws IOException {
+    public void on_details_radio_clicked()  {
         date_radio.setSelected(false);
         title_radio.setSelected(false);
         details_radio.setSelected(true);
@@ -59,49 +54,63 @@ public class HelloController_edit_task {
 
 
     public void initialize() throws IOException {
-        File tempFile = new File("C:\\Users\\SMART_CLOUD\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile2.txt");
-        if(tempFile.exists()){
-        BufferedReader reader = new BufferedReader(new FileReader(tempFile));
-        String str = reader.readLine();
-        LocalDate _D = LocalDate.parse(str.substring(0,10));
-        String _T = str.split(" " )[1];
-        String _DE = str.split(" " )[2];
-        title.setText(_T);
-        details.setText(_DE);
-        date.setValue(_D);
-        tempFile.delete();
+        File tempFile = new File("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile2.txt");
+        if (tempFile.exists()) {
+            BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+            String str = reader.readLine();
+            task_id.setVisible(true);
+            task_id.setText(str);
         }
-        }
-
+    }
 
 
     @FXML
-    public void onbackclick(ActionEvent event) throws IOException {
+    public void onbackclick(ActionEvent event) throws IOException, SQLException {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    public void editclick(ActionEvent event) throws IOException {
-        String taskTitle = title.getText();
-        String taskDetails = details.getText();
-        LocalDate taskDate = date.getValue();
-        String new_data_ = new_data.getText();
 
-        if (!taskTitle.isEmpty() && !taskDetails.isEmpty() && taskDate != null &&(!new_data_.isEmpty())) {
-            Task task = new Task(taskDate,taskTitle, taskDetails);
-            if(date_radio.isSelected()){
-            if(task.editTask(new_data_,taskTitle, taskDetails)){onbackclick(event);}else{alter.setText("Check the correctness content !!");}}
-            if(title_radio.isSelected()){
-                if(task.editTask(taskDate.toString(),new_data_, taskDetails)){onbackclick(event);}else{alter.setText("Check the correctness content !!");}}
-            if(details_radio.isSelected()){
-                if(task.editTask(taskDate.toString(),taskTitle, new_data_)){onbackclick(event);}else{alter.setText("Check the correctness content !!");}}
+    @FXML
+    public void editclick(ActionEvent event) throws IOException, SQLException {
+        String taskId = task_id.getText().trim();
+        String _a_ = new_data.getText().trim();
+
+        if (taskId.isEmpty() || _a_.isEmpty()) {
+            alter.setText("Please enter a Task ID and new data!");
+        }
+
+        Task task = new Task();
+        String taskInfo = task.searchInfo(taskId);
+        String editedTaskString = null;
+
+        String[] parts = taskInfo.split(" ");
+        String Date = parts[0];
+        String id = parts[1];
+        String comp = parts[2];
+        String Task_title = parts[3];
+        String Task_Details = parts[4];
+        if (date_radio.isSelected()) {
+            editedTaskString = buildEditedTaskString(_a_, id,comp, Task_title, Task_Details);
+        } else if (title_radio.isSelected()) {
+            editedTaskString = buildEditedTaskString(Date, id,comp, _a_, Task_Details);
+        } else if (details_radio.isSelected()) {
+            editedTaskString = buildEditedTaskString(Date, id,comp, Task_title, _a_);
+        }
+        if (editedTaskString != null && task.editTask(taskInfo,editedTaskString)) {
+            onbackclick(event);
         } else {
-            alter.setText("Check the nullity of content !!");
+            alter.setText("An error occurred while editing the task!");
         }
     }
+
+    private String buildEditedTaskString(String date, String id, String comp, String title, String details) {
+        return date + " " + id + " " + comp + " " + title + " " + details;
+    }
+
+
 }
