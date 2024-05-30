@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.ListCell?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="477.0" style="-fx-background-color: #64b5f6;" styleClass="page-color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController">
    <children>
 
@@ -174,9 +173,9 @@
             </HBox>
          </content>
       </DialogPane>
-      <Label styleClass="font-inin-main-page" alignment="CENTER" contentDisplay="CENTER" layoutX="380.0" layoutY="150.0" prefHeight="91.0" prefWidth="84.0" text="Label" textAlignment="CENTER" textOverrun="CLIP" fx:id="x_x">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="380.0" layoutY="150.0" prefHeight="91.0" prefWidth="84.0" styleClass="font-inin-main-page" text="Label" textAlignment="CENTER" textOverrun="CLIP" fx:id="x_x">
       </Label>
-      <Label styleClass="font-inin-main-page" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="380.0" layoutY="281.0" prefHeight="91.0" prefWidth="84.0" text="Label" textAlignment="CENTER" textOverrun="CLIP" fx:id="x_y" />
+      <Label alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="380.0" layoutY="281.0" prefHeight="91.0" prefWidth="84.0" styleClass="font-inin-main-page" text="Label" textAlignment="CENTER" textOverrun="CLIP" fx:id="x_y" />
       <DialogPane fx:id="error_dialog" layoutX="144.0" layoutY="147.0" prefHeight="91.0" prefWidth="204.0" style="-fx-background-color: #64b5f6;" visible="false">
          <header>
 
@@ -203,5 +202,6 @@
       </DialogPane>
       <Button layoutX="397.0" layoutY="65.0" mnemonicParsing="false" onAction="#quotes_DIALAG" styleClass="light-button" text="Quotes" />
       <Button layoutX="273.0" layoutY="65.0" mnemonicParsing="false" onAction="#TOMOROW_TASKS_VIEW" prefHeight="25.0" prefWidth="107.0" styleClass="light-button" text="Tomorrow Tasks" />
+      <Button layoutX="383.0" layoutY="429.0" mnemonicParsing="false" onAction="#backup" onMouseClicked="#backup" prefHeight="25.0" prefWidth="84.0" styleClass="light-button" text="Back Up" />
    </children>
 </Pane>

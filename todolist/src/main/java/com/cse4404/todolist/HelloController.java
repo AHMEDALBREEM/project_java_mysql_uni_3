@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.*;
 import java.sql.SQLException;
@@ -72,6 +73,17 @@ public class HelloController {
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("tomorow_tasks.fxml")));
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    public void backup(ActionEvent event) throws IOException {
+        Button Button = (Button) event.getSource();
+        Scene scene = Button.getParent().getScene();
+        Stage stage = (Stage) scene.getWindow();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("backup.fxml")));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

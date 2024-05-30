@@ -23,6 +23,8 @@ public class Task {
     private LocalDate  Date;
     private int  id;
     static String PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
+    static String back_up_delete = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\back_up_delete_task.txt";
+    static String back_up_edit = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\back_up_edit_task.txt";
     String _PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/task_db";
     private static final String DB_USER = "temp";
@@ -165,6 +167,8 @@ public void sort_add() throws IOException,SQLException {
         return true;
     }
 
+
+
     public boolean isIdAvailable(int id) throws IOException,SQLException {
         File filePath = new File(PATH);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -241,6 +245,7 @@ public void sort_add() throws IOException,SQLException {
                     writer.write(currentLine + "\n");
                 } else {
                     deleted = true;
+                    append_delete_file_back_up(taskInfo+"\n");
                 }
             }
         }
@@ -259,7 +264,49 @@ public void sort_add() throws IOException,SQLException {
     }
 
 
+    public void append_edit_file_back_up(String lineToedit) throws IOException {
+        Files.write(Paths.get(back_up_edit), lineToedit.getBytes(), StandardOpenOption.APPEND);
+    }
+    public void return_edit_file_back_up(String str_new_edit) throws IOException, SQLException {
+        delete(str_new_edit,back_up_edit);
+        String[] parts = str_new_edit.split(" ");
+        delete(searchInfo(parts[1]),PATH);
+        Files.write(Paths.get(PATH), str_new_edit.getBytes(), StandardOpenOption.APPEND);
+        sort_add();
+    }
+    public void append_delete_file_back_up(String lineToDelete) throws IOException {
+        Files.write(Paths.get(back_up_delete), lineToDelete.getBytes(), StandardOpenOption.APPEND);
+    }
+    public void return_delete_file_back_up(String str_new_delete) throws IOException, SQLException {
+        delete(str_new_delete,back_up_delete);
+        String[] parts = str_new_delete.split(" ");
+        delete(searchInfo(parts[1]),PATH);
+        Files.write(Paths.get(PATH), str_new_delete.getBytes(), StandardOpenOption.APPEND);
+        sort_add();
+    }
 
+
+    public void delete(String lineToDelete,String path) throws IOException,SQLException
+
+    {try (BufferedReader reader = new BufferedReader(new FileReader(path));
+    BufferedWriter writer = new BufferedWriter(new FileWriter(_PATH))) {
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            if (!currentLine.equals(lineToDelete)) {
+                writer.write(currentLine + "\n");
+            }
+        }
+    }
+        try (BufferedReader reader = new BufferedReader(new FileReader(_PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
+                    writer.write(currentLine + "\n");
+
+            }
+        }
+
+    }
 
     public boolean editTask(String lineToDelete,String str_new) throws IOException,SQLException {
         boolean x = false;
@@ -273,6 +320,7 @@ public void sort_add() throws IOException,SQLException {
                 writer.write(currentLine + "\n");
             } else {
                 x = true;
+                append_edit_file_back_up(lineToDelete+"\n");
                 writer.write(str_new + "\n");
             }
         }
@@ -288,6 +336,7 @@ public void sort_add() throws IOException,SQLException {
         FileWriter fileWriter = new FileWriter(_PATH);
         fileWriter.write("");
         fileWriter.close();
+
         return true;
     }
 }
