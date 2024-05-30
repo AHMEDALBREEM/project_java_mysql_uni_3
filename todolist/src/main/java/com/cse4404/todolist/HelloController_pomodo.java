@@ -6,13 +6,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Font;
+import javafx.util.StringConverter;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class HelloController_pomodo {
@@ -20,6 +26,7 @@ public class HelloController_pomodo {
     private Label timerLabel;
     @FXML
     private Label instructionlabel;
+
 
     @FXML
     private Label information;
@@ -38,10 +45,51 @@ public class HelloController_pomodo {
     private int minutes = 30;
     private int seconds = 0;
     private boolean isRunning = false;
-
+    String PATH     = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
 
     @FXML
-    public void initialize(){
+    private Spinner<String> fxx;
+
+    public void Readfromfile() throws IOException {
+        final int[] x = {0};
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+
+        SpinnerValueFactory<String> valueFactory = new SpinnerValueFactory<String>() {
+            public void decrement(int steps) {
+                if (x[0] >= 1) {
+                    x[0]--;
+                    setValue(lines.get(x[0]));
+                }
+            }
+
+            public void increment(int steps) {
+                if (x[0] < lines.size() - 1) {
+                    x[0]++;
+                    setValue(lines.get(x[0]));
+                }
+            }
+        };
+        valueFactory.setConverter(new StringConverter<String>() {
+            public String toString(String object) {
+                return object;
+            }
+
+            public String fromString(String string) {
+                return string;
+            }
+        });
+        valueFactory.setValue(lines.get(x[0]));
+        fxx.setValueFactory(valueFactory);
+    }
+
+    @FXML
+    public void initialize()throws IOException{
         startButton.setFont(customFont);
         stopButton.setFont(customFont);
         shortBreakButton.setFont(customFont);
@@ -49,6 +97,13 @@ public class HelloController_pomodo {
         continueButton.setFont(customFont);
         instructionlabel.setFont(customFont);
         instructionlabel.setOpacity(0);
+        Readfromfile();
+        fxx.getEditor().setOnMouseClicked(event -> {
+            String selectedItem = fxx.getValue();
+            String[] parts = selectedItem.split(" ");
+            int id = Integer.parseInt(parts[1]);
+            as.setText(Integer.toString(id));
+        });
     }
 
     @FXML
@@ -66,7 +121,7 @@ public class HelloController_pomodo {
     private TextField as;
 
 @FXML
-public void onchange(){
+public void onchange() throws SQLException{
     if(as.getText() != null && !as.getText().isEmpty()) {
     Task t1 = new Task();
     information.setText(t1.searchInfo(as.getText().trim()));}
@@ -74,14 +129,15 @@ public void onchange(){
 
 
     @FXML
-    public void oncomplete(ActionEvent event) throws IOException {
+    public void oncomplete(ActionEvent event) throws IOException, SQLException {
         if(as.getText() != null && !as.getText().isEmpty()) {
             Task t1 = new Task();
-            information.setText(t1.searchInfo(as.getText().trim()));
+            information.setText("Task Completed !!");
             if (t1.markComplete(as.getText().trim())) {
                 onbackclick(event);
             }else{
                 instructionlabel.setText("Check the ID !!");
+                return;
 
             }
         }else{

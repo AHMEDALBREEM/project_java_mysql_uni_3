@@ -20,19 +20,18 @@ public class HelloController_add_task {
     private TextField details;
 
     @FXML
-    private TextField title;
+    private TextField title1;
     @FXML
     private TextField TASKID;
 
     @FXML
-
     private DatePicker date;
     @FXML
 
     private Label alert;
 
     @FXML
-    public void on_back_click(ActionEvent event) throws IOException {
+    public void on_back_click(ActionEvent event) throws IOException, SQLException {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
@@ -45,13 +44,12 @@ public class HelloController_add_task {
 
 
     @FXML
-    public void on_create_click(ActionEvent event) throws IOException {
-        String taskTitle = title.getText().trim();
+    public void on_create_click(ActionEvent event) throws IOException,SQLException {
+        String taskTitle = title1.getText().trim();
         String taskDetails = details.getText().trim();
         LocalDate taskDate = date.getValue();
         String taskid = TASKID.getText().trim();
         LocalDate today = LocalDate.now();
-
         if (!taskTitle.isEmpty() && !taskDetails.isEmpty() && taskDate != null && ((taskDate.isAfter(today)) || (taskDate.isEqual(today)))) {
             Task task = new Task(taskDate,taskid,taskTitle, taskDetails);
             if(task.AppendToFileFiles()){on_back_click(event);}else{alert.setText("Check the I/O files !!");}

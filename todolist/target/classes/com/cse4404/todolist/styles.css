@@ -1,8 +1,37 @@
 
+   .calendarGrid {
+        -fx-background-color: #7ebcff;
+        -fx-border-color: #000000;
+        -fx-border-style: solid;
+        -fx-border-color:  #e6f7ff;
+        -fx-border-radius : 10%;
+        -fx-text-fill: #ffffff;
+        -fx-font-family: 'Segoe UI Semibold';
+        -fx-alignment: center;
+        -fx-padding: 20px 10px 20px 10px;
+    }
+   .task-cell {
+       text-align: center;  /* Or left or right as desired */
+   }
+.light-button-calena{
+        -fx-font-family: 'Segoe UI Semibold';
+        -fx-text-fill: #fffcfc;
+        -fx-background-color: #000000;
+}
+.Pane{
+        -fx-font-family: 'Segoe UI Semibold';
+        -fx-background-color: #e6f7ff;
+}
+    .light-button-calena:hover {
+        -fx-text-fill: #fffcfc;
+        -fx-background-color: #053f78;
+    }
+
 .light-button {
     -fx-font-family: 'Segoe UI Semibold';
     -fx-text-fill: #ffffff;
     -fx-background-color: #003366;
+
 }
 
 .light-button.radio-button {
@@ -17,8 +46,11 @@
 }
 
 .light-button:hover {
-
     -fx-background-color: #64b5f6;
+}
+
+.label {
+    -fx-wrap-text: true;
 }
 
 .light-button_pomodo:hover {
@@ -39,6 +71,8 @@
 {
     -fx-font-family: 'Segoe UI Semibold';
     -fx-text-fill: white;
+    -fx-underline: true;
+
 }
 
 .light-list-view .list-cell {
@@ -48,6 +82,7 @@
     -fx-border-style: solid;
     -fx-border-color:  #e6f7ff;
     -fx-border-radius : 2%;
+    -fx-strikethrough: true;
 }
 
 .light-list-view .list-cell:hover {
@@ -70,4 +105,6 @@
     -fx-font-family: 'Segoe UI Semibold';
     -fx-border-color:  #e6f7ff;
     -fx-border-radius : 0%;
+    -fx-underline: true;
+
 }

@@ -31,17 +31,18 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="alter" alignment="CENTER" layoutX="135.0" layoutY="216.0" prefHeight="30.0" prefWidth="250.0">
+            <Label fx:id="alter" alignment="CENTER" layoutX="15.0" layoutY="216.0" prefHeight="35.0" prefWidth="500.0">
                <font>
-                  <Font size="24.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
             <TextField fx:id="new_data" layoutX="54.0" layoutY="101.0" prefHeight="42.0" prefWidth="407.0" promptText="Enter the New Data (date as yyyy-MM-dd)" styleClass="text-filed" />
             <HBox alignment="CENTER" layoutX="39.0" layoutY="44.0" prefHeight="42.0" prefWidth="468.0">
                <children>
+                  <RadioButton fx:id="details_radio" mnemonicParsing="false" onMouseClicked="#on_details_radio_clicked" prefHeight="42.0" prefWidth="132.0" styleClass="light-button" text="Details" />
                   <RadioButton fx:id="date_radio" mnemonicParsing="false" onMouseClicked="#ondate_radio_clicked" prefHeight="42.0" prefWidth="139.0" styleClass="light-button" text="Date" />
                   <RadioButton fx:id="title_radio" mnemonicParsing="false" onMouseClicked="#on_TITLE_radio_clicked" prefHeight="48.0" prefWidth="93.0" styleClass="light-button" text="Title" />
-                  <RadioButton fx:id="details_radio" mnemonicParsing="false" onMouseClicked="#on_details_radio_clicked" prefHeight="42.0" prefWidth="132.0" styleClass="light-button" text="Details" />
+                  <RadioButton fx:id="complete_radio1" mnemonicParsing="false" onMouseClicked="#on_complete_radio_clicked" prefHeight="42.0" prefWidth="132.0" styleClass="light-button" text="Complete" />
                </children>
             </HBox>
          </children>

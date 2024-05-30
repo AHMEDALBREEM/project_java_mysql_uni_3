@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="302.0" prefWidth="513.0" styleClass="page-color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController_add_task">
+<Pane prefHeight="393.0" prefWidth="513.0" styleClass="page-color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cse4404.todolist.HelloController_add_task">
    <children>
-      <Button layoutX="432.0" layoutY="250.0" mnemonicParsing="false" onAction="#on_create_click" prefHeight="38.0" prefWidth="70.0" styleClass="light-button" text="CREATE">
+      <Button layoutX="432.0" layoutY="341.0" mnemonicParsing="false" onAction="#on_create_click" prefHeight="38.0" prefWidth="70.0" styleClass="light-button" text="CREATE">
          <font>
             <Font size="14.0" />
          </font>
@@ -18,7 +18,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="14.0" layoutY="250.0" mnemonicParsing="false" onAction="#on_back_click" prefHeight="38.0" prefWidth="70.0" styleClass="light-button" text="BACK">
+      <Button layoutX="14.0" layoutY="345.0" mnemonicParsing="false" onAction="#on_back_click" prefHeight="38.0" prefWidth="70.0" styleClass="light-button" text="BACK">
          <font>
             <Font size="14.0" />
          </font>
@@ -26,20 +26,20 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <TextField  styleClass="text-filed" fx:id="details" alignment="CENTER" layoutX="16.0" layoutY="137.0" prefHeight="48.0" prefWidth="481.0" promptText="TASK Deatils">
+      <TextField fx:id="details" alignment="CENTER" layoutX="14.0" layoutY="170.0" prefHeight="85.0" prefWidth="481.0" promptText="TASK Deatils" styleClass="text-filed">
          <font>
             <Font size="24.0" />
          </font>
       </TextField>
-      <TextField styleClass="text-filed" fx:id="title" alignment="CENTER" layoutX="83.0" layoutY="76.0" prefHeight="51.0" prefWidth="349.0" promptText="TASK Title">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </TextField>
-      <DatePicker fx:id="date" layoutX="60.0" layoutY="14.0" prefHeight="51.0" prefWidth="171.0" promptText="Enter Date of Task" />
-      <Label fx:id="alert" alignment="CENTER" layoutX="22.0" layoutY="212.0" prefHeight="30.0" prefWidth="471.0" style="-fx-font-size: 20;">
+      <DatePicker fx:id="date" layoutX="22.0" layoutY="14.0" prefHeight="51.0" prefWidth="171.0" promptText="Enter Date of Task" />
+      <Label fx:id="alert" alignment="CENTER" layoutX="15.0" layoutY="291.0" prefHeight="38.0" prefWidth="488.0" style="-fx-font-size: 20;">
       </Label>
-      <TextField styleClass="text-filed" fx:id="TASKID" alignment="CENTER" layoutX="273.0" layoutY="14.0" prefHeight="51.0" prefWidth="200.0" promptText="TASK ID">
+      <TextField fx:id="TASKID" alignment="CENTER" layoutX="293.0" layoutY="13.0" prefHeight="51.0" prefWidth="200.0" promptText="TASK ID" styleClass="text-filed">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="title1" alignment="CENTER" layoutX="83.0" layoutY="99.0" prefHeight="51.0" prefWidth="349.0" promptText="TASK Title" styleClass="text-filed">
          <font>
             <Font size="24.0" />
          </font>

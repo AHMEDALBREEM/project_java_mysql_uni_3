@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 
@@ -24,7 +25,7 @@ public class HelloController_delete_task {
 
 
     @FXML
-    public void onbackclick(ActionEvent event) throws IOException {
+    public void onbackclick(ActionEvent event) throws IOException, SQLException {
         Button Button = (Button) event.getSource();
         Scene scene = Button.getParent().getScene();
         Stage stage = (Stage) scene.getWindow();
@@ -34,7 +35,7 @@ public class HelloController_delete_task {
         stage.show();
     }
     @FXML
-    public void ondeleteclick(ActionEvent event) throws IOException {
+    public void ondeleteclick(ActionEvent event) throws IOException,SQLException {
         String  TASKID = task_id.getText().trim();
         String str;
         if (!(TASKID.isEmpty())) {

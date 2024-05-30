@@ -36,7 +36,7 @@ public class HelloController_help_inforation {
     }
 
     @FXML
-    public void onsubmitclick(ActionEvent event) throws IOException {
+    public void onsubmitclick(ActionEvent event) throws IOException,SQLException {
         if (!Objects.equals(msg_.getText(), "")) {
             try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
                 String sql = "CREATE TABLE IF NOT EXISTS  test_msgs.msgs_from_users ("

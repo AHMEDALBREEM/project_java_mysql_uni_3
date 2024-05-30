@@ -25,8 +25,8 @@ public class Task {
     static String PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt";
     String _PATH = "C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/task_db";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "Ahmed@2026";
+    private static final String DB_USER = "temp";
+    private static final String DB_PASSWORD = "asd";
 
 
     private void load_data_db() throws IOException, SQLException {
@@ -53,7 +53,7 @@ public class Task {
         }
     }
 
-    private void save_data(String data) {
+    private void save_data(String data) throws SQLException{
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             String sql = "CREATE TABLE IF NOT EXISTS  task_db.tasks_back_up ("
                     +"id INT AUTO_INCREMENT PRIMARY KEY,"+"msg VARCHAR(255) NOT NULL" + ");";
@@ -72,11 +72,12 @@ public class Task {
     }
 
 
-    Task(LocalDate Date_,String id,String Task_title_,String Task_Details_) throws IOException {
+    Task(LocalDate Date_,String id,String Task_title_,String Task_Details_) throws IOException,SQLException {
     this.Date = Date_;
     this.Task_Details = Task_Details_;
     this.Task_title = Task_title_;
-    this.comp = "false";
+
+        this.comp = "false";
     if(!(isIdAvailable(Integer.parseInt(id)))){
         this.id = Integer.parseInt(id);
     }else{
@@ -84,20 +85,10 @@ public class Task {
     }
     }
 
-
-
-
-
-
     Task(){}
 
 
-
-
-
-
-
-    public String extract_text() {
+    public String extract_text() throws SQLException {
         String fileContents = null;
         try {
         load_data_db();
@@ -121,7 +112,7 @@ public class Task {
 
 
 
-    public void sort_tasks() throws IOException {
+    public void sort_tasks() throws IOException,SQLException {
        Path sourcePath = Paths.get("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\tempFile.txt");
         if(sourcePath.toFile().exists()){
        Path destinationPath = Paths.get("C:\\Users\\ahmed\\IdeaProjects\\todolist\\src\\main\\java\\com\\cse4404\\todolist\\task.txt");
@@ -135,6 +126,7 @@ public class Task {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         ArrayList<String> lines = new ArrayList<>();
         Scanner scanner = new Scanner(new File(PATH));
@@ -151,7 +143,7 @@ public class Task {
                 save_data(extract_text());}
         }
 
-public void sort_add() throws IOException {
+public void sort_add() throws IOException,SQLException {
     ArrayList<String> lines = new ArrayList<>();
     Scanner scanner = new Scanner(new File(PATH));
     while (scanner.hasNextLine()) {
@@ -166,14 +158,14 @@ public void sort_add() throws IOException {
     writer.close();
     save_data(extract_text());}
 
-    public boolean AppendToFileFiles() throws IOException {
-        String textToAppend = Date.toString() + " " + String.valueOf(id) + " " + String.valueOf(false) + " " + Task_title + " " + Task_Details + "\n";
+    public boolean AppendToFileFiles() throws IOException,SQLException {
+        String textToAppend = Date.toString() + " " + String.valueOf(id) + " " + String.valueOf(false) + " " + Task_title + " "  + Task_Details + "\n";
         Files.write(Paths.get(PATH), textToAppend.getBytes(), StandardOpenOption.APPEND);
         sort_add();
         return true;
     }
 
-    public boolean isIdAvailable(int id) throws IOException {
+    public boolean isIdAvailable(int id) throws IOException,SQLException {
         File filePath = new File(PATH);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String currentLine;
@@ -188,7 +180,7 @@ public void sort_add() throws IOException {
         return false;
     }
 
-    public String searchInfo(String id) {
+    public String searchInfo(String id) throws SQLException {
         String info = null;
         try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
             String line;
@@ -207,7 +199,9 @@ public void sort_add() throws IOException {
     }
 
 
-    public boolean markComplete(String taskId) throws IOException {
+
+
+    public boolean markComplete(String taskId) throws IOException,SQLException {
         boolean taskFound = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(PATH));
              BufferedWriter writer = new BufferedWriter(new FileWriter(_PATH))) {
@@ -223,15 +217,21 @@ public void sort_add() throws IOException {
             }
         }
         if (!taskFound) {
+            FileWriter fileWriter = new FileWriter(_PATH);
+            fileWriter.write("");
+            fileWriter.close();
             return false;
         }
         sort_tasks();
+        FileWriter fileWriter = new FileWriter(_PATH);
+        fileWriter.write("");
+        fileWriter.close();
         return true;
     }
 
 
 
-    public boolean deleteTaskToFile(String taskInfo) throws IOException {
+    public boolean deleteTaskToFile(String taskInfo) throws IOException,SQLException {
         boolean deleted = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(PATH));
              BufferedWriter writer = new BufferedWriter(new FileWriter(_PATH))) {
@@ -246,8 +246,14 @@ public void sort_add() throws IOException {
         }
         if (deleted) {
             sort_tasks();
+            FileWriter fileWriter = new FileWriter(_PATH);
+            fileWriter.write("");
+            fileWriter.close();
             return true;
         } else {
+            FileWriter fileWriter = new FileWriter(_PATH);
+            fileWriter.write("");
+            fileWriter.close();
             return false;
         }
     }
@@ -255,7 +261,7 @@ public void sort_add() throws IOException {
 
 
 
-    public boolean editTask(String lineToDelete,String str_new) throws IOException {
+    public boolean editTask(String lineToDelete,String str_new) throws IOException,SQLException {
         boolean x = false;
         File filePath = new File(PATH);
         File tempFile = new File(_PATH);
@@ -273,9 +279,15 @@ public void sort_add() throws IOException {
         reader.close();
         writer.close();
         if (!x) {
+            FileWriter fileWriter = new FileWriter(_PATH);
+            fileWriter.write("");
+            fileWriter.close();
             return false;
         }
         sort_tasks();
+        FileWriter fileWriter = new FileWriter(_PATH);
+        fileWriter.write("");
+        fileWriter.close();
         return true;
     }
 }

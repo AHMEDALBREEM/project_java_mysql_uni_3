@@ -30,12 +30,23 @@ public class HelloController_edit_task {
 
     @FXML
     private RadioButton details_radio;
+    @FXML
+    private RadioButton complete_radio1;
 
     @FXML
     public void ondate_radio_clicked()  {
         date_radio.setSelected(true);
         title_radio.setSelected(false);
         details_radio.setSelected(false);
+        complete_radio1.setSelected(false);
+    }
+
+    @FXML
+    public void on_complete_radio_clicked()  {
+        date_radio.setSelected(false);
+        title_radio.setSelected(false);
+        details_radio.setSelected(false);
+        complete_radio1.setSelected(true);
     }
 
     @FXML
@@ -43,6 +54,7 @@ public class HelloController_edit_task {
         date_radio.setSelected(false);
         title_radio.setSelected(true);
         details_radio.setSelected(false);
+        complete_radio1.setSelected(false);
     }
 
     @FXML
@@ -50,6 +62,7 @@ public class HelloController_edit_task {
         date_radio.setSelected(false);
         title_radio.setSelected(false);
         details_radio.setSelected(true);
+        complete_radio1.setSelected(false);
     }
 
 
@@ -79,15 +92,14 @@ public class HelloController_edit_task {
     public void editclick(ActionEvent event) throws IOException, SQLException {
         String taskId = task_id.getText().trim();
         String _a_ = new_data.getText().trim();
-
+        String _b_ = "";
         if (taskId.isEmpty() || _a_.isEmpty()) {
             alter.setText("Please enter a Task ID and new data!");
+            return;
         }
-
         Task task = new Task();
         String taskInfo = task.searchInfo(taskId);
         String editedTaskString = null;
-
         String[] parts = taskInfo.split(" ");
         String Date = parts[0];
         String id = parts[1];
@@ -100,6 +112,15 @@ public class HelloController_edit_task {
             editedTaskString = buildEditedTaskString(Date, id,comp, _a_, Task_Details);
         } else if (details_radio.isSelected()) {
             editedTaskString = buildEditedTaskString(Date, id,comp, Task_title, _a_);
+        } else if (complete_radio1.isSelected()) {
+            _b_ = _a_.toLowerCase();
+            if(_b_.equals("true")||_b_.equals("false")){
+                editedTaskString = buildEditedTaskString(Date, id,_b_, Task_title,Task_Details);
+            }
+            else{
+                alter.setText("Check your Entered Data to Be Eddited !!");
+                return;
+            }
         }
         if (editedTaskString != null && task.editTask(taskInfo,editedTaskString)) {
             onbackclick(event);
